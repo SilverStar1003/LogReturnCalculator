@@ -5,15 +5,17 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Set Streamlit app title
-st.title("Stock Log Returns Calculator")
-
+st.title('📈 Log Return Calculator')
+st.write("The LogReturnCalculator is a web application designed to provide users with the ability to input stock symbols and timeframes, and generate and visualize log returns for the specified stocks")
 # Get user input for stock ticker symbol
+
+st.markdown("<hr>", unsafe_allow_html=True)
+st.header('🔍Market Data Retrieval and Logarithmic Return Calculation')
+st.markdown("<hr>", unsafe_allow_html=True)
 ticker = st.text_input("Enter stock ticker symbol (e.g., AAPL):")
 
 # Define timeframe options
 timeframes = {
-    "1D": 1,
     "5D": 5,
     "10D": 10,
     "1M": 30,
@@ -29,8 +31,9 @@ selected_timeframe = st.selectbox("Select a timeframe:", list(timeframes.keys())
 stock_data = None
 log_returns = None
 
+
 # Define function to retrieve stock data
-@st.cache_data(ttl=60*5)  # Caches the data for 5 minutes to avoid redundant API calls
+@st.cache_data(ttl=60 * 5)  # Caches the data for 5 minutes to avoid redundant API calls
 def load_stock_data(ticker, timeframe):
     try:
         if isinstance(timeframe, int):
@@ -41,6 +44,7 @@ def load_stock_data(ticker, timeframe):
     except Exception as e:
         st.error("Error retrieving stock data. Please check your inputs.")
         st.stop()
+
 
 # Retrieve stock data and calculate log returns
 if st.button("Calculate"):
@@ -56,7 +60,7 @@ if st.button("Calculate"):
 # Display the stock data and log returns
 if stock_data is not None:
     st.subheader("Stock Data")
-    stock_data=stock_data.iloc[::-1]
+    stock_data = stock_data.iloc[::-1]
     st.dataframe(stock_data)
 
     col1, col2 = st.columns(2)
@@ -70,5 +74,5 @@ if stock_data is not None:
     # Display the log returns table
     with col2:
         st.subheader("Log Returns")
-        log_returns=log_returns.iloc[::-1]
+        log_returns = log_returns.iloc[::-1]
         st.dataframe(log_returns)
